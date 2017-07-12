@@ -26,6 +26,7 @@
                           <th>书名</th>
                           <th>作者</th>
                           <th>价格</th>
+                          <th>操作</th>
                       </thead>
                       <tbody>
                           <tr v-for="book in books">
@@ -75,6 +76,9 @@
         })
         var app = new Vue({
             el: '#app',
+            ready: function() {
+                this.get()
+            },
             data: {
                 sortparam: '',
                 book: {
@@ -106,6 +110,13 @@
             }]
             },
             methods: {
+                get: function() {
+                    this.$http.get('book.json').then(function(response) {
+                        this.$set('books', data)
+                    }).catch(function(response) {
+                        console.log(response)
+                    })
+                },
                 addBook: function() {
                     // 计算书的id
                     this.book.id = this.books.length + 1;
